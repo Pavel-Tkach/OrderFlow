@@ -12,4 +12,8 @@ data class Order(
     val createdAt: OffsetDateTime,
     val updatedAt: OffsetDateTime
 ) {
+
+    enum class OrderStatus {
+
+    }
 }

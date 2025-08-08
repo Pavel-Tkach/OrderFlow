@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: order-service
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5558/order-db
+    username: postgres
+    password: 1234
+
+server:
+  port: 9130

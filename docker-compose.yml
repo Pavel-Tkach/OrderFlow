@@ -59,6 +59,24 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
 
+#  order-service:
+#    container_name: order-service
+#    build: ./order-service
+#    ports:
+#      - "9130:8080"
+#    env_file:
+#      - .env
+
+  order-database:
+    container_name: order-database
+    image: postgres
+    ports:
+      - "5558:5432"
+    environment:
+      - POSTGRES_DB=order-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+
   kafka-1:
     image: confluentinc/cp-kafka:8.0.0
     ports:

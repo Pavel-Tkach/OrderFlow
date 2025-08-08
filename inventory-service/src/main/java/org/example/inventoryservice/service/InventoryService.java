@@ -29,30 +29,15 @@ public class InventoryService {
     private final InventoryItemRepository inventoryItemRepository;
     private final InventoryReservationRepository reservationRepository;
 
-    @Transactional(readOnly = true)
-    public InventoryItemResponseDto getInventory(UUID productId, UUID warehouseId) {
-        InventoryItem inventoryItem = inventoryItemRepository.findByProductIdAndWarehouseId(productId, warehouseId);
-
-        return inventoryItemMapper.toDto(inventoryItem);
-    }
-
     @Transactional
-    public void reserveInventory(ReserveInventoryRequestDto reserveInventoryRequestDto) {
-        UUID productId = reserveInventoryRequestDto.getProductId();
-        UUID warehouseId = reserveInventoryRequestDto.getWarehouseId();
-        Integer quantity = reserveInventoryRequestDto.getQuantity();
+    public void reserveInventory(InventoryReservedEvent inventoryReservedEvent) {
+        UUID productId = inventoryReservedEvent.getProductId();
+        UUID warehouseId = inventoryReservedEvent.getWarehouseId();
+        Integer quantity = inventoryReservedEvent.getQuantity();
         InventoryItem inventoryItem = inventoryItemRepository.findByProductIdAndWarehouseId(productId, warehouseId);
         checkAvailableQuantityForReservation(quantity, inventoryItem);
         inventoryItem.setReservedQuantity(quantity + inventoryItem.getReservedQuantity());
         inventoryItemRepository.save(inventoryItem);
-        InventoryReservedEvent inventoryReservedEvent = InventoryReservedEvent.builder()
-                .eventStatus(INVENTORY_RESERVED)
-                .orderId(null)
-                .productId(productId)
-                .warehouseId(warehouseId)
-                .quantity()
-                .eventTime(OffsetDateTime.now())
-                .build();
     }
 
     public void realiseInventory(RealiseInventoryRequestDto realiseInventoryRequestDto) {
