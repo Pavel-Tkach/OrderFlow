@@ -1,0 +1,121 @@
+services:
+  eureka-service:
+    container_name: eureka-service
+    build: ./eureka-service
+    ports:
+      - "9000:8080"
+
+#  inventory-service:
+#    container_name: inventory-service
+#    build: ./inventory-service
+#    ports:
+#      - "9100:8080"
+#    env_file:
+#      - .env
+
+  inventory-database:
+    container_name: inventory-database
+    image: postgres
+    ports:
+      - "5555:5432"
+    environment:
+      - POSTGRES_DB=inventory-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+
+#  product-service:
+#    container_name: product-service
+#    build: ./product-service
+#    ports:
+#      - "9110:8080"
+#    env_file:
+#      - .env
+
+  product-database:
+    container_name: product-database
+    image: postgres
+    ports:
+      - "5556:5432"
+    environment:
+      - POSTGRES_DB=product-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+
+#  warehouse-service:
+#    container_name: warehouse-service
+#    build: ./warehouse-service
+#    ports:
+#      - "9120:8080"
+#    env_file:
+#      - .env
+
+  warehouse-database:
+    container_name: warehouse-database
+    image: postgis/postgis:17-3.4
+    ports:
+      - "5557:5432"
+    environment:
+      - POSTGRES_DB=warehouse-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+
+  kafka-1:
+    image: confluentinc/cp-kafka:8.0.0
+    ports:
+      - "29092:29092"
+    environment:
+      CLUSTER_ID: '9f9cdd57a2c648a2a741062e1b0ccba7'
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "3@kafka-3:49092"
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+    depends_on:
+      - kafka-3
+
+  kafka-2:
+    image: confluentinc/cp-kafka:8.0.0
+    ports:
+      - "39092:39092"
+    environment:
+      CLUSTER_ID: '9f9cdd57a2c648a2a741062e1b0ccba7'
+      KAFKA_NODE_ID: 2
+      KAFKA_PROCESS_ROLES: broker
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "3@kafka-3:49092"
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:9092,PLAINTEXT_HOST://localhost:39092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+    depends_on:
+      - kafka-3
+
+  kafka-3:
+    image: confluentinc/cp-kafka:8.0.0
+    ports:
+      - "49092:49092"
+    environment:
+      CLUSTER_ID: '9f9cdd57a2c648a2a741062e1b0ccba7'
+      KAFKA_NODE_ID: 3
+      KAFKA_PROCESS_ROLES: controller
+      KAFKA_LISTENERS: CONTROLLER://kafka-3:49092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "3@kafka-3:49092"
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "10000:8080"
+    environment:
+      DYNAMIC_CONFIG_ENABLED: "true"
+      KAFKA_CLUSTERS_0_NAME: "local-cluster"
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - kafka-3

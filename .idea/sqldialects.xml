@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/inventory-service/src/main/resources/db/changelog/sql/ddl/01.create-inventory_item-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/inventory-service/src/main/resources/db/changelog/sql/ddl/02.create-inventory_reservation-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/repository/CategoryRepository.java" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/ddl/01.create-category-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/ddl/02.create-product-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/ddl/03.create-product_attribute-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/dml/01.insert-category-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/dml/02.insert-product-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/dml/03.insert-product_attribute-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/warehouse-service/src/main/java/org/example/warehouseservice/repository/WarehouseRepository.java" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/warehouse-service/src/main/resources/db/changelog/sql/ddl/01.create-warehouse-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/warehouse-service/src/main/resources/db/changelog/sql/ddl/02.create-find_nearest_warehouse-procedure.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/warehouse-service/src/main/resources/db/changelog/sql/dml/01.insert-warehouse-table.sql" dialect="PostgreSQL" />
+  </component>
+</project>
