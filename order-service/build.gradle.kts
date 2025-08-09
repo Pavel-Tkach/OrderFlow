@@ -30,6 +30,10 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	implementation("org.springframework.kafka:spring-kafka")
 
+	implementation("org.postgresql:postgresql:42.7.7")
+	implementation("org.liquibase:liquibase-core:4.33.0")
+	implementation("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

@@ -3,6 +3,8 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/inventory-service/src/main/resources/db/changelog/sql/ddl/01.create-inventory_item-table.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/inventory-service/src/main/resources/db/changelog/sql/ddl/02.create-inventory_reservation-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/order-service/src/main/resources/db.changelog/sql/ddl/01.create-order-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/order-service/src/main/resources/db.changelog/sql/ddl/02.create-order_item-table.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/repository/CategoryRepository.java" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/ddl/01.create-category-table.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/ddl/02.create-product-table.sql" dialect="PostgreSQL" />
@@ -14,5 +16,6 @@
     <file url="file://$PROJECT_DIR$/warehouse-service/src/main/resources/db/changelog/sql/ddl/01.create-warehouse-table.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/warehouse-service/src/main/resources/db/changelog/sql/ddl/02.create-find_nearest_warehouse-procedure.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/warehouse-service/src/main/resources/db/changelog/sql/dml/01.insert-warehouse-table.sql" dialect="PostgreSQL" />
+    <file url="PROJECT" dialect="PostgreSQL" />
   </component>
 </project>

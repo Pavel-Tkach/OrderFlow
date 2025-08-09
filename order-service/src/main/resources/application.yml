@@ -5,6 +5,16 @@ spring:
     url: r2dbc:postgresql://localhost:5558/order-db
     username: postgres
     password: 1234
+  liquibase:
+    change-log: db.changelog/db.changelog-master.xml
+    user: postgres
+    password: 1234
+    url: jdbc:postgresql://localhost:5558/order-db
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:9000/eureka/}
 
 server:
   port: 9130
