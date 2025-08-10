@@ -3,6 +3,7 @@ plugins {
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.5.4"
 	id("io.spring.dependency-management") version "1.1.7"
+	kotlin("kapt") version "1.9.25"
 }
 
 group = "org.example"
@@ -33,6 +34,9 @@ dependencies {
 	implementation("org.postgresql:postgresql:42.7.7")
 	implementation("org.liquibase:liquibase-core:4.33.0")
 	implementation("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
+
+	compileOnly("org.mapstruct:mapstruct:1.6.0")
+	kapt("org.mapstruct:mapstruct-processor:1.6.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")

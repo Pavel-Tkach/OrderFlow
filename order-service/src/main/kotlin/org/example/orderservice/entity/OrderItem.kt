@@ -9,7 +9,7 @@ import java.util.UUID
 @Table(name = "order_item")
 data class OrderItem(
     @Id
-    val id: UUID,
+    val id: UUID?,
 
     @Column(value = "order_id")
     val orderId: UUID,

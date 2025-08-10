@@ -11,13 +11,13 @@ import java.util.*
 data class Order(
 
     @Id
-    val id: UUID,
+    val id: UUID?,
 
     @Column(value = "user_id")
     val userId: UUID,
 
     @Column(value = "status")
-    var status: OrderStatus,
+    var status: OrderStatus? = OrderStatus.NEW,
 
     @Column(value = "total_price")
     var totalPrice: BigDecimal,
@@ -26,8 +26,21 @@ data class Order(
     val createdAt: OffsetDateTime,
 
     @Column(value = "updated_at")
-    val updatedAt: OffsetDateTime,
+    val updatedAt: OffsetDateTime?,
 ) {
+
+    constructor(
+        userId: UUID,
+        totalPrice: BigDecimal,
+        createdAt: OffsetDateTime = OffsetDateTime.now()
+    ) : this(
+        id = null,
+        userId = userId,
+        status = OrderStatus.NEW,
+        totalPrice = totalPrice,
+        createdAt = createdAt,
+        updatedAt = null
+    )
 
     enum class OrderStatus {
         NEW,
@@ -37,4 +50,5 @@ data class Order(
         COMPLETED,
         CANCELLED,
     }
+
 }
