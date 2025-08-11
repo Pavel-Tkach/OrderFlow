@@ -9,7 +9,7 @@ import java.util.UUID
 @Table(name = "order_outbox")
 data class OrderOutbox(
     @Id
-    val id: UUID,
+    val id: UUID?,
     @Column(value = "event_type")
     val eventType: String,
     @Column(value = "order_id")
@@ -21,8 +21,23 @@ data class OrderOutbox(
     @Column(value = "created_at")
     val createdAt: OffsetDateTime,
     @Column(value = "sent_at")
-    val sentAt: OffsetDateTime,
+    val sentAt: OffsetDateTime?,
 ) {
+
+    constructor(
+        eventType: String,
+        orderId: UUID,
+        payload: String,
+        status: OutboxStatus,
+    ) : this(
+        id = null,
+        eventType = eventType,
+        orderId = orderId,
+        payload = payload,
+        status = status,
+        createdAt = OffsetDateTime.now(),
+        sentAt = null,
+    )
 
     enum class OutboxStatus {
         NEW,

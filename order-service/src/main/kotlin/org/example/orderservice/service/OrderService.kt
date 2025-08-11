@@ -1,12 +1,16 @@
 package org.example.orderservice.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.example.orderservice.dto.OrderItemDto
+import org.example.orderservice.dto.OrderItemsDetailDto
 import org.example.orderservice.dto.request.CreateOrderRequestDto
 import org.example.orderservice.dto.response.CreateOrderResponseDto
 import org.example.orderservice.entity.Order
+import org.example.orderservice.entity.OrderOutbox
 import org.example.orderservice.mapper.OrderItemMapper
 import org.example.orderservice.mapper.OrderMapper
-import org.example.orderservice.producer.OrderEventProducer
 import org.example.orderservice.repository.OrderItemRepository
+import org.example.orderservice.repository.OrderOutboxRepository
 import org.example.orderservice.repository.OrderRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,7 +23,7 @@ class OrderService(
     private val orderItemMapper: OrderItemMapper,
     private val orderRepository : OrderRepository,
     private val orderItemRepository: OrderItemRepository,
-    private val orderEventProducer: OrderEventProducer,
+    private val orderOutboxRepository: OrderOutboxRepository,
 ) {
 
     @Transactional
@@ -31,7 +35,8 @@ class OrderService(
         val items = createOrderRequestDto.orderItems
             .map { orderItemMapper.toEntity(it) }
         val savedOrderItems = items.map { orderItemRepository.save(it) }
-        // save event to OrderOutbox
+        val orderOutbox = buildOrderOutbox(savedOrder.id, createOrderRequestDto)
+        orderOutboxRepository.save(orderOutbox)
 
         return orderMapper.toCreateOrderResponseDto(savedOrder, savedOrderItems)
     }
@@ -54,5 +59,30 @@ class OrderService(
 
     private fun setOrderIdToOrderItems(createOrderRequestDto: CreateOrderRequestDto, orderId: UUID) {
         createOrderRequestDto.orderItems.forEach { orderItem -> orderItem.orderId = orderId }
+    }
+
+    private fun buildOrderOutbox(orderId: UUID, createOrderRequestDto: CreateOrderRequestDto): OrderOutbox {
+        return OrderOutbox(
+            "order.created",
+            orderId,
+            getJsonFor(convertToOrderItemsDetailDtos(createOrderRequestDto.orderItems)),
+            OrderOutbox.OutboxStatus.NEW
+        )
+    }
+
+    private fun getJsonFor(forSerialized: Any): String {
+        val objectMapper = ObjectMapper()
+
+        return objectMapper.writeValueAsString(forSerialized)
+    }
+
+    private fun convertToOrderItemsDetailDtos(orderItems: List<OrderItemDto>): List<OrderItemsDetailDto> {
+        return orderItems.map { orderItemDto ->
+            OrderItemsDetailDto(
+                orderItemDto.productId,
+                orderItemDto.warehouseId,
+                orderItemDto.quantity
+            )
+        }
     }
 }
