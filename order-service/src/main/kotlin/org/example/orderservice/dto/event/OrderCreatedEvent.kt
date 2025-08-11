@@ -7,7 +7,6 @@ import java.util.UUID
 data class OrderCreatedEvent(
     val orderId: UUID,
     val orderItemsDetailDto: List<OrderItemsDetailDto>,
-    val eventTime: OffsetDateTime = OffsetDateTime.now(),
-) {
+): OrderEvent() {
 
 }

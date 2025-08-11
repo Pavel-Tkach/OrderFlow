@@ -12,6 +12,7 @@ import org.example.orderservice.mapper.OrderMapper
 import org.example.orderservice.repository.OrderItemRepository
 import org.example.orderservice.repository.OrderOutboxRepository
 import org.example.orderservice.repository.OrderRepository
+import org.example.orderservice.util.Constants.ORDER_CREATED
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -63,7 +64,7 @@ class OrderService(
 
     private fun buildOrderOutbox(orderId: UUID, createOrderRequestDto: CreateOrderRequestDto): OrderOutbox {
         return OrderOutbox(
-            "order.created",
+            ORDER_CREATED,
             orderId,
             getJsonFor(convertToOrderItemsDetailDtos(createOrderRequestDto.orderItems)),
             OrderOutbox.OutboxStatus.NEW
