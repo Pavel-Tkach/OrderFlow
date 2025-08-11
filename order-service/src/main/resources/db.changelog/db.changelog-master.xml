@@ -11,5 +11,6 @@
 
     <include file="sql/ddl/01.create-order-table.sql" relativeToChangelogFile="true"/>
     <include file="sql/ddl/02.create-order_item-table.sql" relativeToChangelogFile="true"/>
+    <include file="sql/ddl/03.create-order_outbox-table.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

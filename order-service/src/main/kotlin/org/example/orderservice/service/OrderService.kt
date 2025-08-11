@@ -5,6 +5,7 @@ import org.example.orderservice.dto.response.CreateOrderResponseDto
 import org.example.orderservice.entity.Order
 import org.example.orderservice.mapper.OrderItemMapper
 import org.example.orderservice.mapper.OrderMapper
+import org.example.orderservice.producer.OrderEventProducer
 import org.example.orderservice.repository.OrderItemRepository
 import org.example.orderservice.repository.OrderRepository
 import org.springframework.stereotype.Service
@@ -18,6 +19,7 @@ class OrderService(
     private val orderItemMapper: OrderItemMapper,
     private val orderRepository : OrderRepository,
     private val orderItemRepository: OrderItemRepository,
+    private val orderEventProducer: OrderEventProducer,
 ) {
 
     @Transactional
@@ -29,6 +31,7 @@ class OrderService(
         val items = createOrderRequestDto.orderItems
             .map { orderItemMapper.toEntity(it) }
         val savedOrderItems = items.map { orderItemRepository.save(it) }
+        // save event to OrderOutbox
 
         return orderMapper.toCreateOrderResponseDto(savedOrder, savedOrderItems)
     }

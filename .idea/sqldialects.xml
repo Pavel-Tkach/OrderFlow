@@ -4,7 +4,8 @@
     <file url="file://$PROJECT_DIR$/inventory-service/src/main/resources/db/changelog/sql/ddl/01.create-inventory_item-table.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/inventory-service/src/main/resources/db/changelog/sql/ddl/02.create-inventory_reservation-table.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/order-service/src/main/resources/db.changelog/sql/ddl/01.create-order-table.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/order-service/src/main/resources/db.changelog/sql/ddl/02.create-order_item-table.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/order-service/src/main/resources/db.changelog/sql/ddl/02.create-order_item-table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/order-service/src/main/resources/db.changelog/sql/ddl/03.create-order_outbox-table.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/product-service/src/main/java/org/example/productservice/repository/CategoryRepository.java" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/ddl/01.create-category-table.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/product-service/src/main/resources/db/changelog/sql/ddl/02.create-product-table.sql" dialect="PostgreSQL" />

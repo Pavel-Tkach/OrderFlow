@@ -10,6 +10,8 @@ spring:
     user: postgres
     password: 1234
     url: jdbc:postgresql://localhost:5558/order-db
+  kafka:
+    bootstrap-servers: localhost:29092, localhost:39092
 
 eureka:
   client:
