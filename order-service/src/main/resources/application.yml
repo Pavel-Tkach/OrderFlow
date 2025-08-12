@@ -12,6 +12,8 @@ spring:
     url: jdbc:postgresql://localhost:5558/order-db
   kafka:
     bootstrap-servers: localhost:29092, localhost:39092
+  jpa:
+    open-in-view: false
 
 eureka:
   client:
