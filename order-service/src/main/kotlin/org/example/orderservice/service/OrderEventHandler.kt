@@ -23,8 +23,11 @@ class OrderEventHandler(
                 val orderId = orderOutbox.orderId
                 val payload = orderOutbox.payload
                 val objectMapper = ObjectMapper()
-                val orderItemsDetailDto = listOf(objectMapper.readValue(payload, OrderItemsDetailDto::class.java))
-                orderEventProducer.publishOrderCreatedEvent(orderId, orderItemsDetailDto)
+                val orderItems: List<OrderItemsDetailDto> = objectMapper.readValue(
+                    payload,
+                    Array<OrderItemsDetailDto>::class.java
+                ).toList()
+                orderEventProducer.publishOrderCreatedEvent(orderId, orderItems)
                 orderOutbox.sentAt = OffsetDateTime.now()
                 orderOutbox.status = OrderOutbox.OutboxStatus.SENT
             }
