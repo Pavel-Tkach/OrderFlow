@@ -1,7 +1,6 @@
 package org.example.orderservice.dto.event
 
 import org.example.orderservice.dto.OrderItemsDetailDto
-import java.time.OffsetDateTime
 import java.util.UUID
 
 data class OrderCreatedEvent(

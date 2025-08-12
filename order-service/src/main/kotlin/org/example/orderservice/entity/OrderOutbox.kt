@@ -17,11 +17,11 @@ data class OrderOutbox(
     @Column(value = "payload")
     val payload: String,
     @Column(value = "status")
-    val status: OutboxStatus,
+    var status: OutboxStatus,
     @Column(value = "created_at")
     val createdAt: OffsetDateTime,
     @Column(value = "sent_at")
-    val sentAt: OffsetDateTime?,
+    var sentAt: OffsetDateTime?,
 ) {
 
     constructor(

@@ -1,9 +1,9 @@
 package org.example.orderservice.producer
 
-import org.example.orderservice.dto.OrderItemDto
 import org.example.orderservice.dto.OrderItemsDetailDto
 import org.example.orderservice.dto.event.OrderCreatedEvent
 import org.example.orderservice.dto.event.OrderEvent
+import org.example.orderservice.util.Constants.ORDER_CREATED
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -13,15 +13,8 @@ class OrderEventProducer(
     private val orderCreatedKafkaTemplate: KafkaTemplate<String, OrderEvent>
 ) {
 
-    fun publishOrderCreatedEvent(orderId: UUID, orderItems: List<OrderItemDto>) {
-        val orderItemsDetailDtos = orderItems.map { orderItemDto ->
-            OrderItemsDetailDto(
-                orderItemDto.productId,
-                orderItemDto.warehouseId,
-                orderItemDto.quantity
-            )
-        }
+    fun publishOrderCreatedEvent(orderId: UUID, orderItemsDetailDtos: List<OrderItemsDetailDto>) {
         val orderCreatedEvent = OrderCreatedEvent(orderId, orderItemsDetailDtos)
-        orderCreatedKafkaTemplate.send("order.created", orderCreatedEvent)
+        orderCreatedKafkaTemplate.send(ORDER_CREATED, orderCreatedEvent)
     }
 }
