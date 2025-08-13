@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS inventory_item (
-     id                 UUID                        PRIMARY KEY,
+     id                 UUID                        PRIMARY KEY DEFAULT gen_random_uuid(),
      product_id         UUID                        NOT NULL,
      warehouse_id       UUID                        NOT NULL,
      total_quantity     INT                         NOT NULL CHECK (total_quantity >= 0),

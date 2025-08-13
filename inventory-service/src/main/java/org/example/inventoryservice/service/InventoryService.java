@@ -7,6 +7,7 @@ import org.example.inventoryservice.dto.request.RealiseInventoryRequestDto;
 import org.example.inventoryservice.dto.request.RestockInventoryRequestDto;
 import org.example.inventoryservice.entity.InventoryItem;
 import org.example.inventoryservice.entity.InventoryReservation;
+import org.example.inventoryservice.enums.ReservationStatus;
 import org.example.inventoryservice.repository.InventoryItemRepository;
 import org.example.inventoryservice.repository.InventoryReservationRepository;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class InventoryService {
                     inventoryItemRepository.save(inventoryItem);
 
                     return InventoryReservation.builder()
+                            .status(ReservationStatus.RESERVED)
                             .orderId(orderId)
                             .productId(productId)
                             .warehouseId(warehouseId)

@@ -12,4 +12,6 @@
     <include file="sql/ddl/01.create-inventory_item-table.sql" relativeToChangelogFile="true"/>
     <include file="sql/ddl/02.create-inventory_reservation-table.sql" relativeToChangelogFile="true"/>
 
+    <include file="sql/dml/01.insert-into-inventory_item-table.sql" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
