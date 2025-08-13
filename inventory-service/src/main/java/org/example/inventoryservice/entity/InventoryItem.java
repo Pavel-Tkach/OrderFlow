@@ -15,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
+// количество на складе
 public class InventoryItem {
 
     @Id

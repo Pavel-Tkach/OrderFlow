@@ -1,43 +1,48 @@
 package org.example.inventoryservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.inventoryservice.dto.event.InventoryReservedEvent;
+import org.example.inventoryservice.dto.event.OrderCreatedEvent;
 import org.example.inventoryservice.dto.request.DeductInventoryRequestDto;
 import org.example.inventoryservice.dto.request.RealiseInventoryRequestDto;
 import org.example.inventoryservice.dto.request.RestockInventoryRequestDto;
-import org.example.inventoryservice.dto.response.InventoryItemResponseDto;
-import org.example.inventoryservice.dto.request.ReserveInventoryRequestDto;
 import org.example.inventoryservice.entity.InventoryItem;
-import org.example.inventoryservice.mapper.InventoryItemMapper;
+import org.example.inventoryservice.entity.InventoryReservation;
 import org.example.inventoryservice.repository.InventoryItemRepository;
 import org.example.inventoryservice.repository.InventoryReservationRepository;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
-
-import static org.example.inventoryservice.enums.ReservationEventStatus.INVENTORY_RESERVED;
 
 @Service
 @RequiredArgsConstructor
 public class InventoryService {
 
-    private final InventoryItemMapper inventoryItemMapper;
-    private final KafkaTemplate<String, InventoryReservedEvent> kafkaTemplate;
     private final InventoryItemRepository inventoryItemRepository;
     private final InventoryReservationRepository reservationRepository;
 
     @Transactional
-    public void reserveInventory(InventoryReservedEvent inventoryReservedEvent) {
-        UUID productId = inventoryReservedEvent.getProductId();
-        UUID warehouseId = inventoryReservedEvent.getWarehouseId();
-        Integer quantity = inventoryReservedEvent.getQuantity();
-        InventoryItem inventoryItem = inventoryItemRepository.findByProductIdAndWarehouseId(productId, warehouseId);
-        checkAvailableQuantityForReservation(quantity, inventoryItem);
-        inventoryItem.setReservedQuantity(quantity + inventoryItem.getReservedQuantity());
-        inventoryItemRepository.save(inventoryItem);
+    public void reserveInventory(OrderCreatedEvent orderCreatedEvent) {
+        UUID orderId = orderCreatedEvent.getOrderId();
+        List<InventoryReservation> reservations = orderCreatedEvent.getOrderItemsDetailDto()
+                .stream().map(orderItemsDetailDto -> {
+                    UUID productId = orderItemsDetailDto.getProductId();
+                    UUID warehouseId = orderItemsDetailDto.getWarehouseId();
+                    Integer quantity = orderItemsDetailDto.getQuantity();
+                    InventoryItem inventoryItem = inventoryItemRepository.findByProductIdAndWarehouseId(productId, warehouseId);
+                    checkAvailableQuantityForReservation(quantity, inventoryItem);
+                    inventoryItem.setReservedQuantity(quantity + inventoryItem.getReservedQuantity());
+                    inventoryItemRepository.save(inventoryItem);
+
+                    return InventoryReservation.builder()
+                            .orderId(orderId)
+                            .productId(productId)
+                            .warehouseId(warehouseId)
+                            .quantity(quantity)
+                            .build();
+                }).toList();
+        reservationRepository.saveAll(reservations);
     }
 
     public void realiseInventory(RealiseInventoryRequestDto realiseInventoryRequestDto) {
