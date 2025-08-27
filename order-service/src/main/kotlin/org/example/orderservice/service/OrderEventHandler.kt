@@ -1,7 +1,7 @@
 package org.example.orderservice.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.example.orderservice.dto.OrderItemsDetailDto
+import org.example.commoncore.dto.OrderItemsDetailDto
 import org.example.orderservice.entity.OrderOutbox
 import org.example.orderservice.producer.OrderEventProducer
 import org.example.orderservice.repository.OrderOutboxRepository

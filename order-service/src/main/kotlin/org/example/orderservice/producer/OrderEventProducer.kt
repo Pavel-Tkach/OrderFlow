@@ -1,8 +1,8 @@
 package org.example.orderservice.producer
 
-import org.example.orderservice.dto.OrderItemsDetailDto
-import org.example.orderservice.dto.event.OrderCreatedEvent
-import org.example.orderservice.dto.event.OrderEvent
+import org.example.commoncore.dto.OrderItemsDetailDto
+import org.example.commoncore.dto.event.OrderCreatedEvent
+import org.example.commoncore.dto.event.OrderEvent
 import org.example.orderservice.util.Constants.ORDER_CREATED
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component

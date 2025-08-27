@@ -2,7 +2,7 @@ package org.example.inventoryservice.listener;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.example.inventoryservice.dto.event.OrderCreatedEvent;
+import org.example.commoncore.dto.event.OrderCreatedEvent;
 import org.example.inventoryservice.service.InventoryService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

@@ -3,7 +3,7 @@ package org.example.orderservice.config
 import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
-import org.example.orderservice.dto.event.OrderEvent
+import org.example.commoncore.dto.event.OrderEvent
 import org.example.orderservice.util.Constants.ORDER_CREATED
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean

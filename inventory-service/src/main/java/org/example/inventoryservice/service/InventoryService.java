@@ -1,7 +1,7 @@
 package org.example.inventoryservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.inventoryservice.dto.event.OrderCreatedEvent;
+import org.example.commoncore.dto.event.OrderCreatedEvent;
 import org.example.inventoryservice.dto.request.DeductInventoryRequestDto;
 import org.example.inventoryservice.dto.request.RealiseInventoryRequestDto;
 import org.example.inventoryservice.dto.request.RestockInventoryRequestDto;
