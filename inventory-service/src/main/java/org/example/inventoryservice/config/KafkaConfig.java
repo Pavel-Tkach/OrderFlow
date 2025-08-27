@@ -24,18 +24,18 @@ public class KafkaConfig {
     private List<String> bootstrapServers;
 
     @Bean
-    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>>
-    kafkaListenerContainerFactory() {
+    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(orderCreatedEventConsumerFactory());
+        factory.setConsumerFactory(consumerFactory());
         factory.setConcurrency(3);
         factory.getContainerProperties().setPollTimeout(3000);
+
         return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, Object> orderCreatedEventConsumerFactory() {
+    public ConsumerFactory<String, Object> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(
                 consumerProperties(),
                 new StringDeserializer(),
@@ -49,9 +49,6 @@ public class KafkaConfig {
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        properties.put(JsonDeserializer.TYPE_MAPPINGS,
-                "org.example.orderservice.dto.event.OrderCreatedEvent:org.example.inventoryservice.dto.event.OrderCreatedEvent");
-        properties.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
 
         return properties;
     }
