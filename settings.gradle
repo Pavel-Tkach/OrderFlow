@@ -1,0 +1,5 @@
+rootProject.name = "OrderFlow"
+
+include("common-core")
+include("order-service")
+include("inventory-service")

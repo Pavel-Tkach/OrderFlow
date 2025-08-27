@@ -22,6 +22,8 @@ repositories {
 extra["springCloudVersion"] = "2025.0.0"
 
 dependencies {
+	implementation(project(":common-core"))
+
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -60,4 +62,8 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.register("prepareKotlinBuildScriptModel") {
+
 }
