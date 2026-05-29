@@ -15,10 +15,5 @@ spring:
   kafka:
     bootstrap-servers: localhost:29092, localhost:39092
 
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URL:http://localhost:9000/eureka/}
-
 server:
   port: 8082

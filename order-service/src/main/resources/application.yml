@@ -15,10 +15,5 @@ spring:
   jpa:
     open-in-view: false
 
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URL:http://localhost:9000/eureka/}
-
 server:
   port: 9130

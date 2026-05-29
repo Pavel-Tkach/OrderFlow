@@ -1,10 +1,4 @@
 services:
-  eureka-service:
-    container_name: eureka-service
-    build: ./eureka-service
-    ports:
-      - "9000:8080"
-
 #  inventory-service:
 #    container_name: inventory-service
 #    build: ./inventory-service
@@ -137,3 +131,47 @@ services:
       - kafka-1
       - kafka-2
       - kafka-3
+
+#  keycloak:
+#    image: quay.io/keycloak/keycloak:23.0.7
+#    container_name: keycloak
+#    environment:
+#      KC_DB: postgres
+#      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+#      KC_DB_USERNAME: postgres
+#      KC_DB_PASSWORD: 1234
+#
+#      KC_HEALTH_ENABLED: true
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: admin
+#      KEYCLOAK_IMPORT: ./gateway-service/OrderFlow-realm.json
+#    command: [ "start-dev", "--import-realm" ]
+#    volumes:
+#      - ./gateway-service/:/opt/keycloak/data/import/
+#    depends_on:
+#      - keycloak-db
+#    ports:
+#      - "15000:8080"
+#
+#  keycloak-db:
+#    image: postgres
+#    ports:
+#      - "5600:5432"
+#    environment:
+#      POSTGRES_DB: keycloak
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: 1234
+#
+#  gateway-service:
+#    container_name: gateway-service
+#    build: ./gateway-service
+#    depends_on:
+#      - eureka-service
+#      - keycloak
+#    restart: on-failure
+#    ports:
+#      - "9140:8080"
+#    env_file:
+#      - .env
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
