@@ -7,9 +7,11 @@ import org.example.commoncore.util.OrderStatus;
 import org.example.inventoryservice.dto.request.DeductInventoryRequestDto;
 import org.example.inventoryservice.dto.request.RealiseInventoryRequestDto;
 import org.example.inventoryservice.dto.request.RestockInventoryRequestDto;
+import org.example.inventoryservice.dto.response.InventoryItemResponseDto;
 import org.example.inventoryservice.entity.InventoryItem;
 import org.example.inventoryservice.entity.InventoryReservation;
 import org.example.inventoryservice.enums.ReservationStatus;
+import org.example.inventoryservice.mapper.InventoryItemMapper;
 import org.example.inventoryservice.producer.OrderStatusEventProducer;
 import org.example.inventoryservice.repository.InventoryItemRepository;
 import org.example.inventoryservice.repository.InventoryReservationRepository;
@@ -29,6 +31,7 @@ public class InventoryService {
     private final InventoryItemRepository inventoryItemRepository;
     private final InventoryReservationRepository reservationRepository;
     private final OrderStatusEventProducer orderStatusEventProducer;
+    private final InventoryItemMapper inventoryItemMapper;
 
     @Transactional
     public void reserveInventory(OrderCreatedEvent orderCreatedEvent) {
@@ -64,8 +67,15 @@ public class InventoryService {
 
     }
 
-    public void restockInventory(RestockInventoryRequestDto restockInventoryRequestDto) {
+    @Transactional
+    public InventoryItemResponseDto restockInventory(RestockInventoryRequestDto restockInventoryRequestDto) {
+        UUID productId = restockInventoryRequestDto.getProductId();
+        UUID warehouseId = restockInventoryRequestDto.getWarehouseId();
+        InventoryItem inventoryItem = inventoryItemRepository.findByProductIdAndWarehouseId(productId, warehouseId);
+        inventoryItem.setTotalQuantity(inventoryItem.getTotalQuantity() + restockInventoryRequestDto.getQuantity());
+        InventoryItem updatedInventoryItem = inventoryItemRepository.save(inventoryItem);
 
+        return inventoryItemMapper.toDto(updatedInventoryItem);
     }
 
     private void checkAvailableQuantityForReservation(UUID orderId, Integer quantity, InventoryItem inventoryItem) {
