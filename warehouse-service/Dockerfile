@@ -1,14 +1,13 @@
-FROM gradle:8.10-jdk17-alpine AS build
+FROM gradle:8.14-jdk17-alpine AS build
 
 WORKDIR /app
+
 COPY . .
 
-RUN gradle clean build --no-daemon
+RUN gradle :warehouse-service:bootJar --no-daemon
 
 FROM eclipse-temurin:17-jdk-alpine
 
-WORKDIR /app
+COPY --from=build /app/warehouse-service/build/libs/*.jar app.jar
 
-COPY --from=build /app/build/libs/*.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]

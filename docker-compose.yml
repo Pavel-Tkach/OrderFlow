@@ -1,11 +1,12 @@
 services:
-#  inventory-service:
-#    container_name: inventory-service
-#    build: ./inventory-service
-#    ports:
-#      - "9100:8080"
-#    env_file:
-#      - .env
+  inventory-service:
+    build:
+      context: .
+      dockerfile: inventory-service/Dockerfile
+    ports:
+      - "9100:8080"
+    env_file:
+      - .env
 
   inventory-database:
     container_name: inventory-database
@@ -17,13 +18,13 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
 
-#  product-service:
-#    container_name: product-service
-#    build: ./product-service
-#    ports:
-#      - "9110:8080"
-#    env_file:
-#      - .env
+  product-service:
+    container_name: product-service
+    build: ./product-service
+    ports:
+      - "9110:8080"
+    env_file:
+      - .env
 
   product-database:
     container_name: product-database
@@ -35,13 +36,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
 
-#  warehouse-service:
-#    container_name: warehouse-service
-#    build: ./warehouse-service
-#    ports:
-#      - "9120:8080"
-#    env_file:
-#      - .env
+  warehouse-service:
+    container_name: warehouse-service
+    build:
+      context: .
+      dockerfile: warehouse-service/Dockerfile
+    ports:
+      - "9120:8080"
+    env_file:
+      - .env
 
   warehouse-database:
     container_name: warehouse-database
@@ -53,13 +56,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
 
-#  order-service:
-#    container_name: order-service
-#    build: ./order-service
-#    ports:
-#      - "9130:8080"
-#    env_file:
-#      - .env
+  order-service:
+    container_name: order-service
+    build:
+      context: .
+      dockerfile: order-service/Dockerfile
+    ports:
+      - "9130:8080"
+    env_file:
+      - .env
 
   order-database:
     container_name: order-database
@@ -70,6 +75,12 @@ services:
       - POSTGRES_DB=order-db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
+
+  common-core-service:
+    container_name: common-core-service
+    build: ./common-core
+    ports:
+      - "9140:8080"
 
   kafka-1:
     image: confluentinc/cp-kafka:8.0.0

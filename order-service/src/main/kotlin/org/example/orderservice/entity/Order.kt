@@ -1,5 +1,6 @@
 package org.example.orderservice.entity
 
+import org.example.commoncore.util.OrderStatus
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
@@ -26,7 +27,7 @@ data class Order(
     val createdAt: OffsetDateTime,
 
     @Column(value = "updated_at")
-    val updatedAt: OffsetDateTime?,
+    var updatedAt: OffsetDateTime?,
 ) {
 
     constructor(
@@ -41,14 +42,5 @@ data class Order(
         createdAt = createdAt,
         updatedAt = null
     )
-
-    enum class OrderStatus {
-        NEW,
-        RESERVED,
-        PAID,
-        SHIPPED,
-        COMPLETED,
-        CANCELLED,
-    }
 
 }

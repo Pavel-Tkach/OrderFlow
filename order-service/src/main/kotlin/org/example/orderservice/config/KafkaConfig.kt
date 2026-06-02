@@ -1,16 +1,26 @@
 package org.example.orderservice.config
 
 import org.apache.kafka.clients.admin.NewTopic
+import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
+import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
 import org.example.commoncore.dto.event.OrderEvent
-import org.example.orderservice.util.Constants.ORDER_CREATED
+import org.example.commoncore.dto.event.OrderStatusChangedEvent
+import org.example.commoncore.util.Constants.ORDER_CANCELLED
+import org.example.commoncore.util.Constants.ORDER_CREATED
+import org.example.commoncore.util.Constants.ORDER_RESERVED
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
+import org.springframework.kafka.core.ConsumerFactory
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory
 import org.springframework.kafka.core.DefaultKafkaProducerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+import org.springframework.kafka.support.serializer.JsonDeserializer
 import org.springframework.kafka.support.serializer.JsonSerializer
 
 @Configuration
@@ -35,7 +45,46 @@ class KafkaConfig(
     }
 
     @Bean
+    fun consumerFactory(): ConsumerFactory<String, OrderEvent> {
+        return DefaultKafkaConsumerFactory(
+            consumerProperties(),
+            StringDeserializer(),
+            JsonDeserializer(OrderEvent::class.java)
+        )
+    }
+
+    @Bean
+    fun kafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, OrderEvent> {
+        val factory = ConcurrentKafkaListenerContainerFactory<String, OrderEvent>()
+        factory.consumerFactory = consumerFactory()
+
+        return factory
+    }
+
+    @Bean
+    fun consumerProperties(): Map<String, Any> {
+        val properties = HashMap<String, Any>()
+        properties[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServers
+        properties[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+        properties[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = ErrorHandlingDeserializer::class.java
+        properties[ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS] = JsonDeserializer::class.java
+        properties[JsonDeserializer.TRUSTED_PACKAGES] = "*"
+
+        return properties
+    }
+
+    @Bean
     fun orderCreatedTopic(): NewTopic {
         return NewTopic(ORDER_CREATED, 2, 2)
+    }
+
+    @Bean
+    fun orderReservedTopic(): NewTopic {
+        return NewTopic(ORDER_RESERVED, 2, 2)
+    }
+
+    @Bean
+    fun orderCancelledTopic(): NewTopic {
+        return NewTopic(ORDER_CANCELLED, 2, 2)
     }
 }

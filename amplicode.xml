@@ -7,12 +7,12 @@
           <package value="org.example.inventoryservice" />
         </packages>
       </persistence-unit>
-      <persistence-unit moduleName="product-service.main" name="Default">
+      <persistence-unit moduleName="OrderFlow.product-service.main" name="Default">
         <packages>
           <package value="org.example.productservice" />
         </packages>
       </persistence-unit>
-      <persistence-unit moduleName="warehouse-service.main" name="Default">
+      <persistence-unit moduleName="OrderFlow.warehouse-service.main" name="Default">
         <packages>
           <package value="org.example.warehouseservice" />
         </packages>

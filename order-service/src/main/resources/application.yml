@@ -2,18 +2,18 @@ spring:
   application:
     name: order-service
   r2dbc:
-    url: r2dbc:postgresql://localhost:5558/order-db
+    url: ${ORDER_REACTIVE_DB_URL:r2dbc:postgresql://localhost:5558/order-db}
     username: postgres
     password: 1234
   liquibase:
     change-log: db.changelog/db.changelog-master.xml
     user: postgres
     password: 1234
-    url: jdbc:postgresql://localhost:5558/order-db
+    url: ${ORDER_DB_URL:jdbc:postgresql://localhost:5558/order-db}
   kafka:
-    bootstrap-servers: localhost:29092, localhost:39092
+    bootstrap-servers: ${KAFKA_SERVER_1:localhost:29092}, ${KAFKA_SERVER_2:localhost:39092}
   jpa:
     open-in-view: false
 
 server:
-  port: 9130
+  port: 8080

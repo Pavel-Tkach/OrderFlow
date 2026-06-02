@@ -2,6 +2,8 @@ package org.example.orderservice.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.example.commoncore.dto.OrderItemsDetailDto
+import org.example.commoncore.dto.event.OrderStatusChangedEvent
+import org.example.commoncore.util.Constants.ORDER_CREATED
 import org.example.orderservice.dto.OrderItemDto
 import org.example.orderservice.dto.request.CreateOrderRequestDto
 import org.example.orderservice.dto.response.CreateOrderResponseDto
@@ -12,10 +14,10 @@ import org.example.orderservice.mapper.OrderMapper
 import org.example.orderservice.repository.OrderItemRepository
 import org.example.orderservice.repository.OrderOutboxRepository
 import org.example.orderservice.repository.OrderRepository
-import org.example.orderservice.util.Constants.ORDER_CREATED
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
+import java.time.OffsetDateTime
 import java.util.UUID
 
 @Service
@@ -40,6 +42,15 @@ class OrderService(
         orderOutboxRepository.save(orderOutbox)
 
         return orderMapper.toCreateOrderResponseDto(savedOrder, savedOrderItems)
+    }
+
+    @Transactional
+    suspend fun updateOrderStatus(orderStatusChangedEvent: OrderStatusChangedEvent) {
+        val orderId = orderStatusChangedEvent.orderId
+        val order = orderRepository.findById(orderId) ?: throw RuntimeException("Order with id $orderId not found")
+        order.status = orderStatusChangedEvent.status
+        order.updatedAt = OffsetDateTime.now()
+        orderRepository.save(order)
     }
 
     @Transactional

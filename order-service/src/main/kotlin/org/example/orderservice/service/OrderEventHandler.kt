@@ -31,7 +31,7 @@ class OrderEventHandler(
                 orderOutbox.sentAt = OffsetDateTime.now()
                 orderOutbox.status = OrderOutbox.OutboxStatus.SENT
             }
-            orderOutboxRepository.save(orderOutbox)
+            orderOutboxRepository.delete(orderOutbox)
         }
     }
 }
